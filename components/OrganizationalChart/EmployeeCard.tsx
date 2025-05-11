@@ -18,8 +18,8 @@ export function EmployeeCard({ employee, onToggleExpand, onAddSubordinate, level
   const [isHovered, setIsHovered] = useState(false);
   const hasChildren = employee.children && employee.children.length > 0;
   
-  // Calculate width based on level
-  const widthClass = level === 0 ? 'w-72' : 'w-64';
+  // Calculate width based on level and screen size
+  const widthClass = level === 0 ? 'w-64 sm:w-72' : 'w-56 sm:w-64';
   
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
@@ -40,21 +40,21 @@ export function EmployeeCard({ employee, onToggleExpand, onAddSubordinate, level
         <Button 
           variant="ghost" 
           className="p-0 h-auto w-full flex justify-between items-center mb-2 text-left"
-          onClick={() => window.location.href=`/employee/${employee.id}`} // Would link to profile page
+          onClick={() => window.location.href=`/employee/${employee.id}`}
         >
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8">
               <AvatarImage src={employee.imageUrl} />
               <AvatarFallback>{getInitials(employee.name)}</AvatarFallback>
             </Avatar>
-            <CardTitle className="text-base font-medium">{employee.name}</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-medium">{employee.name}</CardTitle>
           </div>
           <User size={16} className="text-muted-foreground" />
         </Button>
       </CardHeader>
       <CardContent className="pt-0 pb-2">
         <div className="space-y-1">
-          <p className="text-sm font-medium">{employee.position}</p>
+          <p className="text-xs sm:text-sm font-medium">{employee.position}</p>
           <p className="text-xs text-muted-foreground">{employee.department}</p>
           <p className="text-xs truncate">{employee.email}</p>
         </div>
@@ -64,18 +64,18 @@ export function EmployeeCard({ employee, onToggleExpand, onAddSubordinate, level
           <Button 
             variant="outline" 
             size="sm"
-            className="text-xs h-8"
+            className="text-xs h-7 sm:h-8"
             onClick={() => onToggleExpand(employee.id)}
           >
             {employee.expanded ? (
               <>
                 <ChevronUp className="h-3.5 w-3.5 mr-1" />
-                Collapse
+                <span className="hidden sm:inline">Collapse</span>
               </>
             ) : (
               <>
                 <ChevronDown className="h-3.5 w-3.5 mr-1" />
-                Expand
+                <span className="hidden sm:inline">Expand</span>
               </>
             )}
           </Button>
@@ -83,7 +83,7 @@ export function EmployeeCard({ employee, onToggleExpand, onAddSubordinate, level
           <Button 
             variant="outline" 
             size="sm"
-            className="text-xs h-8 opacity-0"
+            className="text-xs h-7 sm:h-8 opacity-0"
             disabled
           >
             No Reports
@@ -92,10 +92,11 @@ export function EmployeeCard({ employee, onToggleExpand, onAddSubordinate, level
         <Button
           variant="secondary"
           size="sm"
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8"
           onClick={() => onAddSubordinate(employee.id)}
         >
-          <Plus className="h-3.5 w-3.5 mr-1" /> Add
+          <Plus className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline ml-1">Add</span>
         </Button>
       </CardFooter>
     </Card>

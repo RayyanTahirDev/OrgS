@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { MessageSquare, Send } from 'lucide-react';
+import { MessageSquare, Send, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -25,12 +25,20 @@ export function ChatBot() {
   };
 
   return (
-    <Card className="fixed right-0 top-0 h-screen w-[30%] border-l border-border rounded-none">
-      <CardHeader className="border-b">
+    <Card className="fixed right-0 top-0 h-screen w-full lg:w-[30%] border-l border-border rounded-none">
+      <CardHeader className="border-b flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <MessageSquare className="h-5 w-5" />
           Chat Assistant
         </CardTitle>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
+          onClick={() => window.location.href = '/'}
+        >
+          <X className="h-4 w-4" />
+        </Button>
       </CardHeader>
       <CardContent className="p-0 flex flex-col h-[calc(100vh-73px)]">
         <div className="flex-1 overflow-auto p-4 space-y-4">

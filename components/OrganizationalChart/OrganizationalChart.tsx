@@ -19,6 +19,7 @@ export function OrganizationalChart({ data }: OrganizationalChartProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const savedChart = localStorage.getItem('organizationChart');
@@ -132,7 +133,7 @@ export function OrganizationalChart({ data }: OrganizationalChartProps) {
             <div className="w-0.5 h-8 bg-border/70" />
             
             <div className={`
-              flex flex-wrap justify-center gap-8 relative
+              flex flex-wrap justify-center gap-4 md:gap-8 relative px-2 md:px-0
               ${employee.children.length > 1 ? 'before:content-[""] before:absolute before:h-0.5 before:bg-border/70 before:top-0 before:left-[calc(50%-50%)] before:right-[calc(50%-50%)]' : ''}
             `}>
               {employee.children.map(child => (
@@ -149,24 +150,25 @@ export function OrganizationalChart({ data }: OrganizationalChartProps) {
   };
 
   return (
-    <div className="w-[70%]">
-      <div className="w-full max-w-7xl my-6 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Organizational Chart</h1>
-        <div className="flex items-center gap-2">
+    <div className="w-full lg:w-[70%]">
+      <div className="w-full max-w-7xl my-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold">Organizational Chart</h1>
+        <div className="flex flex-wrap items-center gap-2">
           <Button 
             onClick={toggleCollapseAll}
             variant="outline"
             className="flex items-center gap-2"
+            size="sm"
           >
             {isCollapsed ? (
               <>
                 <FolderTree className="h-4 w-4" /> 
-                Expand All
+                <span className="hidden sm:inline">Expand All</span>
               </>
             ) : (
               <>
                 <Users className="h-4 w-4" /> 
-                Collapse All
+                <span className="hidden sm:inline">Collapse All</span>
               </>
             )}
           </Button>
@@ -174,15 +176,16 @@ export function OrganizationalChart({ data }: OrganizationalChartProps) {
             onClick={resetToDemo}
             variant="outline"
             className="flex items-center gap-2"
+            size="sm"
           >
             <RotateCcw className="h-4 w-4" />
-            Reset to Demo
+            <span className="hidden sm:inline">Reset to Demo</span>
           </Button>
           <CreateChart onChartCreated={handleChartCreated} />
         </div>
       </div>
       
-      <div className="w-full overflow-x-auto py-8 px-4">
+      <div className="w-full overflow-x-auto py-8 px-2 md:px-4">
         <div className="min-w-max flex justify-center">
           {renderOrganizationalChart(orgData)}
         </div>
@@ -195,7 +198,22 @@ export function OrganizationalChart({ data }: OrganizationalChartProps) {
         parentId={selectedParentId}
       />
 
-      <ChatBot />
+      <div className="fixed bottom-4 right-4 lg:hidden">
+        <Button
+          variant="secondary"
+          className="rounded-full shadow-lg"
+          onClick={() => setShowChat(!showChat)}
+        >
+          Chat Assistant
+        </Button>
+      </div>
+
+      <div className={`
+        fixed inset-0 bg-background lg:relative lg:inset-auto
+        ${showChat ? 'flex' : 'hidden lg:block'}
+      `}>
+        <ChatBot />
+      </div>
     </div>
   );
 }
